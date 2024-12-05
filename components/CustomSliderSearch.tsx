@@ -90,6 +90,26 @@ function Index() {
       actionText: "Читать статью 3",
       caption: "текст",
     },
+    {
+      id: 13,
+      name: "Концепт: Родовая схема",
+      price: "",
+      supplyRemain: 10,
+      uri: "uri1",
+      authorInfo: "",
+      previewText: "Превью статьи 1",
+      actionText: "Читать статью 1",
+    },
+    {
+      id: 14,
+      name: "Концепт: Собственное содержание",
+      price: "",
+      supplyRemain: 5,
+      uri: "uri2",
+      authorInfo: "",
+      previewText: "Превью статьи 2",
+      actionText: "Читать статью 2",
+    }
   ];
 
   // Объединяем данные
@@ -271,7 +291,7 @@ useEffect(() => {
           {/* Проверяем статус загрузки */}
           {status === "success" ? (
             filteredData
-            .filter((el) => el.id !== 2 && el.id !== 9) // Исключаем элементы с id 5 и 10
+            .filter((el) => el.id !== 1) // Исключаем элементы с id 5 и 10
             .map((el) => {
               const id = el.id;
           
