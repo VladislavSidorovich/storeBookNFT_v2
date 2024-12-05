@@ -3,7 +3,6 @@ import styles from "./imageBox.module.css";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import svg from "../../static/svg/svg";
-import Lottie from "lottie-react";
 import animation from "../../static/lottie/loadingAnimation.json";
 
 interface ImageBoxProps {
