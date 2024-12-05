@@ -19,28 +19,31 @@ const ImageBox = ({ url, alt, width, height, onClose }: ImageBoxProps) => {
   const [isImageLoading, setIsImageLoading] = useState(true);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        imageBoxRef.current &&
-        !imageBoxRef.current.contains(event.target as Node)
-      ) {
-        onClose?.();
-      }
-    };
+    // Проверяем, что код выполняется на клиенте
+    if (typeof document !== "undefined") {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (
+          imageBoxRef.current &&
+          !imageBoxRef.current.contains(event.target as Node)
+        ) {
+          onClose?.();
+        }
+      };
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose?.();
-      }
-    };
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+          onClose?.();
+        }
+      };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleKeyDown);
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleKeyDown);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    }
   }, [onClose]);
 
   return (
