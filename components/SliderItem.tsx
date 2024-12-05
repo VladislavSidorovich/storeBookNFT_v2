@@ -39,9 +39,7 @@ function SliderItem({ id, price, supplyRemain, uri, previewText, actionText }: S
   const product = products.find((el) => el.id === id);
 
 
-  const redirectToArticle = () => {
-    window.open(content?.fulltitle, "_blank");
-  };
+ 
 
   useEffect(() => {
     const loadData = async () => {
