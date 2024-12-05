@@ -99,6 +99,7 @@ function Index() {
       authorInfo: "",
       previewText: "Превью статьи 1",
       actionText: "Читать статью 1",
+      caption: "",
     },
     {
       id: 14,
@@ -109,6 +110,7 @@ function Index() {
       authorInfo: "",
       previewText: "Превью статьи 2",
       actionText: "Читать статью 2",
+      caption: "",
     }
   ];
 
