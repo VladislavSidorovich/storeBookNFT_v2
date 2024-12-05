@@ -36,9 +36,6 @@ function SliderItem({ id, price, name, supplyRemain, uri, previewText, actionTex
   const { products } = useAppSelector((state) => state.order);
   const product = products.find((el) => el.id === id);
 
-  const redirectToArticle = () => {
-    window.open(content?.fulltitle, "_blank");
-  };
 
   useEffect(() => {
     // Имитируем загрузку данных
