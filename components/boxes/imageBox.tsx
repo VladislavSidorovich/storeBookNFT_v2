@@ -38,7 +38,7 @@ const ImageBox = ({ url, alt, width, height, onClose }: ImageBoxProps) => {
         )}
         {isImageLoading && (
           <div className={styles["img_loading"]}>
-            <Lottie animationData={animation} />
+    
           </div>
         )}
         <Image
