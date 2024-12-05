@@ -313,7 +313,7 @@ useEffect(() => {
                 return <div key={id}>Загрузка данных для id {id}...</div>;
               }
 
-              const excludedIds = [5, 10, 15]; // Список нежелательных id
+              const excludedIds = [1]; // Список нежелательных id
 
               
 
