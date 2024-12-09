@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
-import SliderItem from "./SliderItem";
+import SliderItemClosed from "./SliderItemClosed";
 import SliderItemNotBlockchainMMACCReports from "./SliderItemNotBlockchainMMACCReports";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -22,7 +22,6 @@ import {
 } from "../utils/converter";
 import Lottie from "lottie-react";
 import animation from "../static/lottie/loadingAnimation.json";
-
 
 interface BlockchainData {
   error?: undefined;
@@ -49,6 +48,7 @@ function Index() {
   const [isModalOpen, setIsModalOpen] = useState(true); // Состояние для модального окна
   const [password, setPassword] = useState(""); // Состояние для пароля
   const [isAuthorized, setIsAuthorized] = useState(false); // Авторизация
+  const [isPurchased, setIsPurchased] = useState(false); // Флаг для купленных статей
 
   const { address } = useAccount();
   const { data: titlesData, status } = useTitlesData();
@@ -118,7 +118,7 @@ function Index() {
       uri: "uri1",
       authorInfo: "С.В Попов",
       previewText: "Превью статьи 1",
-      actionText: "Читать статью 1",
+      actionText: "Читать статью 1", // Условие для купленной статьи
     },
   ];
 
@@ -142,19 +142,26 @@ function Index() {
     return [...reversedBlockchainData, ...staticData];
   }, [titlesData, staticData]);
 
+  // Проверяем, если хотя бы одна статья из данных куплена
   useEffect(() => {
     if (combinedData) {
-      combinedData.forEach((el) => {
-        const previewUri = "result" in el ? el.result.uri : el.uri;
-        console.log(previewUri);
-      });
+      const purchased = combinedData.some(
+        (el) =>
+          ("result" in el && el.result.actionText === "Читать статью") || // Условие для блокчейна
+          ("actionText" in el && el.actionText === "Читать статью") // Условие для статических данных
+      );
+
+      if (purchased) {
+        setIsPurchased(true);
+        setIsModalOpen(false); // Скрываем модальное окно, если статья куплена
+      }
     }
   }, [combinedData]);
 
   return (
     <>
       {/* Модальное окно */}
-      {isModalOpen && (
+      {isModalOpen && !isPurchased && ( // Условие: показывать модальное окно, только если статья не куплена
         <div className="modalСlosedSection">
           <div className="modalСlosedSection-content">
             <h2>Введите пароль</h2>
@@ -169,76 +176,78 @@ function Index() {
         </div>
       )}
 
-      {/* Слайдер отображается только после авторизации */}
-      {isAuthorized ? (
-        <Swiper
-          modules={[Pagination, Navigation]}
-          spaceBetween={0}
-          slidesPerView={1}
-          breakpoints={{
-            800: {
-              slidesPerView: 2,
-              spaceBetween: 10,
-            },
-            1100: {
-              slidesPerView: 3,
-              spaceBetween: 10,
-            },
-          }}
-          navigation
-          pagination={{ clickable: true }}
-          className="custom-swiper"
-        >
-          {combinedData && status === "success" ? (
-            combinedData.map((el, index) => (
-              <SwiperSlide
-                key={index}
-                className={
-                    index === 1 || index === 2 || index === 3 || index === 4 || index === 5 || index === 6 || index === 7 || index === 8
-                    ? "hidden-slide"
-                    : ""
-                }
-              >
-                {"result" in el ? (
-                  <SliderItem
-                    id={el.result.id}
-                    price={el.result.price ? el.result.price : BigInt(0)}
-                    supplyRemain={
-                      el.result.supplyRemain
-                        ? Number(el.result.supplyRemain)
-                        : 0
-                    }
-                    uri={el.result.uri ? el.result.uri : ""}
-                    previewText={index === 3 ? "Превью" : "Превью статьи"}
-                    actionText={index === 3 ? "Смотреть" : "Читать статью"}
-                  />
-                ) : (
-                  <SliderItemNotBlockchainMMACCReports
-                    id={el.id}
-                    name={el.name}
-                    price={el.price}
-                    supplyRemain={el.supplyRemain}
-                    uri={el.uri}
-                    previewText={el.previewText}
-                    actionText={el.actionText}
-                  />
-                )}
-              </SwiperSlide>
-            ))
-          ) : (
-            <div className="loading-block">
-              <Lottie
-                animationData={animation}
-                className={"loading-block-animation"}
-              />
-            </div>
-          )}
-        </Swiper>
-      ) : (
-        <div className="">
-          
-        </div>
-      )}
+      {/* Слайдер */}
+      <Swiper
+        modules={[Pagination, Navigation]}
+        spaceBetween={0}
+        slidesPerView={1}
+        breakpoints={{
+          800: {
+            slidesPerView: 2,
+            spaceBetween: 10,
+          },
+          1100: {
+            slidesPerView: 3,
+            spaceBetween: 10,
+          },
+        }}
+        navigation
+        pagination={{ clickable: true }}
+        className="custom-swiper"
+      >
+        {combinedData && status === "success" ? (
+          combinedData.map((el, index) => (
+            <SwiperSlide
+              key={index}
+              className={
+                index === 1 ||
+                index === 2 ||
+                index === 3 ||
+                index === 4 ||
+                index === 5 ||
+                index === 6 ||
+                index === 7 ||
+                index === 8
+                  ? "hidden-slide"
+                  : ""
+              }
+            >
+              {"result" in el ? (
+                <SliderItemClosed
+                  id={el.result.id}
+                  price={el.result.price ? el.result.price : BigInt(0)}
+                  supplyRemain={
+                    el.result.supplyRemain
+                      ? Number(el.result.supplyRemain)
+                      : 0
+                  }
+                  uri={el.result.uri ? el.result.uri : ""}
+                  previewText={index === 3 ? "Превью" : "Превью статьи"}
+                  actionText={index === 3 ? "Смотреть" : "Читать статью"}
+                  isAuthorized={isAuthorized} // Передаём состояние авторизации
+                />
+              ) : (
+                <SliderItemNotBlockchainMMACCReports
+                  id={el.id}
+                  name={el.name}
+                  price={el.price}
+                  supplyRemain={el.supplyRemain}
+                  uri={el.uri}
+                  previewText={el.previewText}
+                  actionText={el.actionText}
+                />
+              )}
+            </SwiperSlide>
+          ))
+        ) : (
+          <div className="loading-block">
+            <Lottie
+              animationData={animation}
+              className={"loading-block-animation"}
+            />
+          </div>
+        )}
+      </Swiper>
     </>
   );
 }
