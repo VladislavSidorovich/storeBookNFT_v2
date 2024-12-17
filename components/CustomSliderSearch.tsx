@@ -90,28 +90,6 @@ function Index() {
       actionText: "Читать статью 3",
       caption: "текст",
     },
-    {
-      id: 13,
-      name: "Концепт: Родовая схема",
-      price: "",
-      supplyRemain: 10,
-      uri: "uri1",
-      authorInfo: "",
-      previewText: "Превью статьи 1",
-      actionText: "Читать статью 1",
-      caption: "",
-    },
-    {
-      id: 14,
-      name: "Концепт: Собственное содержание",
-      price: "",
-      supplyRemain: 5,
-      uri: "uri2",
-      authorInfo: "",
-      previewText: "Превью статьи 2",
-      actionText: "Читать статью 2",
-      caption: "",
-    }
   ];
 
   // Объединяем данные
@@ -179,6 +157,14 @@ useEffect(() => {
   loadContent();
 }, [combinedData]); // Следим только за combinedData
 
+const uniqueTags: Record<number, string> = {
+  2: "родительство, отцовство, человеческое, рефлексия родителя, обустройство, становление, могущество, достоинство, История, преодоление.",
+  4: "гетерархичность, самоорганизация, совместность, сообщительность, сомыслие, телесность, сознание, коммуникация, имитация, смена операций мышления, комплантация, экзоскелет, техника, коэволюция, метафора, эксперимент, наблюдение, феномены человеческой организации.",
+  7: "событие, сознание, душа, ум, мышление, превращения, сущность, бытие, время, артефакт",
+  5: "событие, сознание, душа, ум, мышление, превращения, сущность, бытие, время, артефакт",
+  1: "несоотносимость, возможность, можность, созидание, мышление, ум, воображение, Единое – Многое, Целое – Части, видение",
+};
+
 const enrichedData = useMemo(() => {
   // Собираем данные из contentMap
   const contentMapData = Object.entries(contentMap).map(([id, data]) => ({
@@ -188,14 +174,16 @@ const enrichedData = useMemo(() => {
     authorInfo: data?.authorInfo || "",
     date: data?.date || "", // Дата из данных IPFS (или пустая строка, если данных нет)
     preview: data?.preview || "",
+    tag: "",
   }));
 
   // Собираем данные из staticData
   const staticDataEntries = staticData.map((item) => ({
     id: item.id, // id из staticData
-    name: item.name || "", // Имя из staticData (или пустая строка, если данных нет)
-    authorInfo: item.authorInfo || "", 
-    caption: item.caption || "", // Имя из staticData (или пустая строка, если данных нет)
+    name: item.name || "",
+    authorInfo: item.authorInfo || "",
+    caption: item.caption || "",
+    tag: "",
   }));
 
   // Добавляем поля price и supplyRemain из combinedData в contentMapData по совпадающему id
@@ -221,7 +209,6 @@ const enrichedData = useMemo(() => {
       };
     }
 
-    // Если совпадение не найдено, возвращаем элемент без изменений
     return {
       ...contentItem,
       price: null,
@@ -230,23 +217,24 @@ const enrichedData = useMemo(() => {
     };
   });
 
-  // Добавляем новую переменную id_revers
+  // Добавляем id_revers и уникальные теги
   const enrichedContentMapData = updatedContentMapData.map((item, index, array) => ({
     ...item,
     id_revers: array.length - index, // Добавляем id_revers (идёт от общего количества к 1)
+    tag: uniqueTags[item.id] || item.tag || "", // Добавляем уникальный тег, если он есть
   }));
 
   // Объединяем массивы (обновленный enrichedContentMapData + staticDataEntries)
   return [...enrichedContentMapData, ...staticDataEntries];
 }, [contentMap, staticData, combinedData]);
 
-
-// Фильтрация данных по поисковому запросу
+// Фильтрация данных с учётом тегов
 const filteredData = useMemo(() => {
   if (!searchQuery) return enrichedData;
 
   return enrichedData.filter((el) =>
-    el.name.toLowerCase().includes(searchQuery.toLowerCase()) // Сравнение имени с поисковым запросом
+    el.name.toLowerCase().includes(searchQuery.toLowerCase()) || // Поиск по имени
+    el.tag.toLowerCase().includes(searchQuery.toLowerCase()) // Поиск по тегу
   );
 }, [searchQuery, enrichedData]);
 
@@ -272,162 +260,161 @@ useEffect(() => {
 
       {/* Проверяем наличие текста в поле ввода */}
       {searchQuery.trim() && (
-        <Swiper
-          modules={[Pagination, Navigation]}
-          spaceBetween={0}
-          slidesPerView={1}
-          breakpoints={{
-            800: {
-              slidesPerView: 2,
-              spaceBetween: 10,
-            },
-            1100: {
-              slidesPerView: 3,
-              spaceBetween: 10,
-            },
-          }}
-          navigation
-          pagination={{ clickable: true }}
-          className="custom-swiper"
-        >
-          {/* Проверяем статус загрузки */}
-          {status === "success" ? (
-            filteredData
-            .filter((el) => el.id !== 1) // Исключаем элементы с id 5 и 10
-            .map((el) => {
-              const id = el.id;
-          
-              let id_revers = 0;
-          
-              if ("id_revers" in el) {
-                id_revers = el.id_revers;
-              }
-          
-              // Проверяем наличие данных (el)
-              if (!el) {
-                return <div key={id}>Загрузка данных для id {id}...</div>;
-              }
+  <>
+    {/* Проверяем наличие данных после фильтрации */}
+    {status === "success" && filteredData.filter((el) => el.id !== 9).length === 0 ? (
+      // Если ничего не найдено, выводим текст
+      <p className="no-results-text">По вашему запросу ничего не найдено</p>
+    ) : (
+      // Если данные есть, отображаем слайдер
+      <Swiper
+        modules={[Pagination, Navigation]}
+        spaceBetween={0}
+        slidesPerView={1}
+        breakpoints={{
+          800: {
+            slidesPerView: 2,
+            spaceBetween: 10,
+          },
+          1100: {
+            slidesPerView: 3,
+            spaceBetween: 10,
+          },
+        }}
+        navigation
+        pagination={{ clickable: true }}
+        className="custom-swiper"
+      >
+            {status === "success" ? (
+              filteredData
+                .filter((el) => el.id !== 9) // Исключаем элементы с id 9
+                .map((el) => {
+                  const id = el.id;
 
-              // Проверяем наличие данных (el)
-              if (!el) {
-                return <div key={id}>Загрузка данных для id {id}...</div>;
-              }
+                  let id_revers = 0;
 
-              const excludedIds = [1]; // Список нежелательных id
+                  if ("id_revers" in el) {
+                    id_revers = el.id_revers;
+                  }
 
-              
+                  // Проверяем наличие данных (el)
+                  if (!el) {
+                    return <div key={id}>Загрузка данных для id {id}...</div>;
+                  }
 
-              return (
-                <SwiperSlide key={id}>
-                  <div className="nft nft_search">
-                    {/* Заголовок NFT */}
-                    <h3 className="nft__heading">{el?.name || "Без имени"}</h3>
-                    {"authorInfo" in el ? (
-                      <p className="nft__heading">
-                        {el?.authorInfo || "Информация об авторе недоступна"}
-                      </p>
-                    ) : (
-                      <p className="nft__price"></p>
-                    )}
+                  return (
+                    <SwiperSlide key={id}>
+                      <div className="nft nft_search">
+                        {/* Заголовок NFT */}
+                        <h3 className="nft__heading">{el?.name || "Без имени"}</h3>
+                        {"authorInfo" in el ? (
+                          <p className="nft__heading">
+                            {el?.authorInfo || "Информация об авторе недоступна"}
+                          </p>
+                        ) : (
+                          <p className="nft__price"></p>
+                        )}
 
-                    {/* Стоимость NFT */}
-                    {"caption" in el ? (
-                      <p className="nft__caption nft_static_text">{el.caption}</p>
-                    ) : (
-                      <p className="nft__caption">Стоимость:</p>
-                    )}
+                        {/* Стоимость NFT */}
+                        {"caption" in el ? (
+                          <p className="nft__caption nft_static_text">{el.caption}</p>
+                        ) : (
+                          <p className="nft__caption">Стоимость:</p>
+                        )}
 
-                    {"price" in el ? (
-                      <div>
-                        <p className="nft__price">
-                          {el.price
-                            ? `${formatUnits(el.price, 18)} MATIC`
-                            : "Цена не указана"}
-                        </p>
-                        <p className="nft__caption">(Около 300 рублей РФ)</p>
-                        <br />
+                        {"price" in el ? (
+                          <div>
+                            <p className="nft__price">
+                              {el.price
+                                ? `${formatUnits(el.price, 18)} MATIC`
+                                : "Цена не указана"}
+                            </p>
+                            <p className="nft__caption">(Около 300 рублей РФ)</p>
+                            <br />
+                          </div>
+                        ) : (
+                          <p className="nft__price"></p>
+                        )}
+
+                        {/* Оставшееся количество */}
+                        {"supplyRemain" in el ? (
+                          <div>
+                            <p className="nft__caption">
+                              Оставшееся количество:{" "}
+                              {el?.supplyRemain !== null ? Number(el.supplyRemain) : "Неизвестно"}
+                            </p>
+                            <br />
+                          </div>
+                        ) : (
+                          <p className="nft__price"></p>
+                        )}
+
+                        {/* Дата выпуска */}
+                        {"date" in el ? (
+                          <p className="nft__time">
+                            {el?.date || "Дата неизвестна"}
+                          </p>
+                        ) : (
+                          <p className="nft__price"></p>
+                        )}
+
+                        {/* Кнопки */}
+                        {"preview" in el ? (
+                          <button
+                            onClick={() => dispatch(openPreviewIframe(id_revers))}
+                            className={cn("btn", "btn_1", {
+                              active: product?.isCompleted,
+                            })}
+                          >
+                            Превью статьи
+                          </button>
+                        ) : (
+                          <p className="nft__price"></p>
+                        )}
+                        {product?.isCompleted && (
+                          <button
+                            onClick={() => dispatch(openBookIframe(id_revers))}
+                            className={cn("btn", "btn_3", {
+                              active: product?.isCompleted,
+                            })}
+                          >
+                            Читать статью
+                          </button>
+                        )}
+                        {"preview" in el ? (
+                          <button
+                            onClick={() => dispatch(open(id_revers))}
+                            className={cn("btn", "btn_2", {
+                              active: false, // Здесь можно связать с состоянием
+                            })}
+                          >
+                            Приобрести NFT
+                          </button>
+                        ) : (
+                          <button
+                            className={cn("btn", "btn_1", "btn_NotBlockchain", {
+                              active: product?.isCompleted,
+                            })}
+                          >
+                            Готовится к публикации
+                          </button>
+                        )}
                       </div>
-                    ) : (
-                      <p className="nft__price"></p>
-                    )}
-
-                    {/* Оставшееся количество */}
-                    {"supplyRemain" in el ? (
-                      <div>
-                        <p className="nft__caption">
-                          Оставшееся количество:{" "}
-                          {el?.supplyRemain !== null ? Number(el.supplyRemain) : "Неизвестно"}
-                        </p>
-                        <br />
-                      </div>
-                    ) : (
-                      <p className="nft__price"></p>
-                    )}
-
-                    {/* Дата выпуска */}
-                    {"date" in el ? (
-                      <p className="nft__time">
-                        {el?.date || "Дата неизвестна"}
-                      </p>
-                    ) : (
-                      <p className="nft__price"></p>
-                    )}
-
-                    {/* Кнопки */}
-                    {"preview" in el ? (
-                      <button
-                        onClick={() => dispatch(openPreviewIframe(id_revers))}
-                        className={cn("btn", "btn_1", {
-                          active: product?.isCompleted,
-                        })}
-                      >
-                        Превью статьи
-                      </button>
-                    ) : (
-                      <p className="nft__price"></p>
-                    )}
-                    {product?.isCompleted && (
-                      <button
-                        onClick={() => dispatch(openBookIframe(id_revers))}
-                        className={cn("btn", "btn_3", {
-                          active: product?.isCompleted,
-                        })}
-                      >
-                        Читать статью
-                      </button>
-                    )}
-                    {"preview" in el ? (
-                      <button
-                        onClick={() => dispatch(open(id_revers))}
-                        className={cn("btn", "btn_2", {
-                          active: false, // Здесь можно связать с состоянием
-                        })}
-                      >
-                        Приобрести NFT
-                      </button>
-                    ) : (
-                      <button
-                        className={cn("btn", "btn_1", "btn_NotBlockchain", {
-                          active: product?.isCompleted,
-                        })}
-                      >
-                        Готовится к публикации
-                      </button>
-                    )}
-                  </div>
-                </SwiperSlide>
-              );
-            })
-          ) : (
-            <div className="loading-block">
-              <Lottie
-                animationData={animation}
-                className={"loading-block-animation"}
-              />
-            </div>
-          )}
-        </Swiper>
-      )}
+                    </SwiperSlide>
+                  );
+                })
+            ) : (
+              <div className="loading-block">
+                <Lottie
+                  animationData={animation}
+                  className={"loading-block-animation"}
+                />
+              </div>
+            )}
+          </Swiper>
+        )}
+      </>
+    )}
     </div>
   );
 }
