@@ -42,6 +42,7 @@ interface StaticData {
   supplyRemain: number;
   previewText: string;
   actionText: string;
+  author: string;
   authorInfo: string;
   uri: string,
   caption: string;
@@ -64,6 +65,7 @@ function Index() {
       supplyRemain: 10,
       uri: "",
       authorInfo: "Гермес",
+      author: "",
       previewText: "Превью статьи 3",
       actionText: "Читать статью 3",
       caption: "текст",
@@ -75,6 +77,7 @@ function Index() {
       supplyRemain: 10,
       uri: "",
       authorInfo: "Вильгельм Виндельбанд",
+      author: "",
       previewText: "Превью статьи 3",
       actionText: "Читать статью 3",
       caption: "текст",
@@ -86,10 +89,47 @@ function Index() {
       supplyRemain: 10,
       uri: "",
       authorInfo: "Франсиско Варела",
+      author: "",
       previewText: "Превью статьи 3",
       actionText: "Читать статью 3",
       caption: "текст",
     },
+    {
+      id: 13,
+      name: "Обустройство как эманация Духа",
+      price: "",
+      supplyRemain: 10,
+      uri: "",
+      authorInfo: "С.В Попов",
+      previewText: "Превью статьи 1",
+      actionText: "Читать статью 1",
+      caption: "",
+      author: "",
+    },
+    {
+      id: 14,
+      name: "Концепт: Родовая схема",
+      price: "",
+      supplyRemain: 10,
+      uri: "",
+      authorInfo: "",
+      previewText: "Превью статьи 1",
+      actionText: "Читать статью 1",
+      caption: "",
+      author: "",
+    },
+    {
+      id: 15,
+      name: "Концепт: Собственное содержание",
+      price: "",
+      supplyRemain: 5,
+      uri: "",
+      authorInfo: "",
+      previewText: "Превью статьи 2",
+      actionText: "Читать статью 2",
+      caption: "",
+      author: "",
+    }
   ];
 
   // Объединяем данные
@@ -181,6 +221,7 @@ const enrichedData = useMemo(() => {
   const staticDataEntries = staticData.map((item) => ({
     id: item.id, // id из staticData
     name: item.name || "",
+    author: item.author || "",
     authorInfo: item.authorInfo || "",
     caption: item.caption || "",
     tag: "",
@@ -234,7 +275,9 @@ const filteredData = useMemo(() => {
 
   return enrichedData.filter((el) =>
     el.name.toLowerCase().includes(searchQuery.toLowerCase()) || // Поиск по имени
-    el.tag.toLowerCase().includes(searchQuery.toLowerCase()) // Поиск по тегу
+    el.tag.toLowerCase().includes(searchQuery.toLowerCase()) || // Поиск по тегу
+    el.author.toLowerCase().includes(searchQuery.toLowerCase()) || // Поиск по тегу
+    el.authorInfo.toLowerCase().includes(searchQuery.toLowerCase()) // Поиск по тегу
   );
 }, [searchQuery, enrichedData]);
 
@@ -262,7 +305,7 @@ useEffect(() => {
       {searchQuery.trim() && (
   <>
     {/* Проверяем наличие данных после фильтрации */}
-    {status === "success" && filteredData.filter((el) => el.id !== 9).length === 0 ? (
+    {status === "success" && filteredData.filter((el) => el.id !== 20).length === 0 ? (
       // Если ничего не найдено, выводим текст
       <p className="no-results-text">По вашему запросу ничего не найдено</p>
     ) : (
