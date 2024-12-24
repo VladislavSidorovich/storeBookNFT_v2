@@ -409,7 +409,7 @@ useEffect(() => {
                               active: product?.isCompleted,
                             })}
                           >
-                            Превью статьи
+                            {el.id === 3 ? "Превью" : "Превью статьи"}
                           </button>
                         ) : (
                           <p className="nft__price"></p>
@@ -421,7 +421,7 @@ useEffect(() => {
                               active: product?.isCompleted,
                             })}
                           >
-                            Читать статью
+                            {el.id === 3 ? "Смотреть" : "Читать статью"}
                           </button>
                         )}
                         {"preview" in el ? (
