@@ -57,9 +57,10 @@ function Index() {
 
   // Зашифрованный пароль (например, "mypassword" в base64)
   const encryptedPassword = btoa("gro!1u@p");
+  const encryptedPasswordall = btoa("ad4m!n");
 
   const handlePasswordSubmit = () => {
-    if (btoa(password) === encryptedPassword) {
+  if (btoa(password) === encryptedPassword || btoa(password) === encryptedPasswordall) {
       setIsAuthorized(true);
       setIsModalOpen(false); // Закрываем модальное окно
     } else {
