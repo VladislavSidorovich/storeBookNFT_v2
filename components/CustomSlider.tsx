@@ -95,16 +95,6 @@ function Index() {
   // Пример статических данных
   const staticData: StaticData[] = [
     {
-      id: 8,
-      name: "Превращения",
-      price: "",
-      supplyRemain: 10,
-      uri: "uri1",
-      authorInfo: "Гермес",
-      previewText: "Превью статьи 1",
-      actionText: "Читать статью 1",
-    },
-    {
       id: 9,
       name: "Из послесловия к немецкому изданию «Истории древней философии», 1899 г.",
       price: "",
@@ -167,7 +157,7 @@ function Index() {
         combinedData.map((el, index) => (
           <SwiperSlide
             key={index}
-            className={ index === 3 || index === 4 ? "hidden-slide" : ""}
+            className={ index === 2 || index === 4 || index === 7 || index === 8 ? "hidden-slide" : ""}
           >
             {"result" in el ? (
               <SliderItem
