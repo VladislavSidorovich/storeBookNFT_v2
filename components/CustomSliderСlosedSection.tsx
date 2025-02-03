@@ -201,6 +201,8 @@ function Index() {
             <SwiperSlide
               key={index}
               className={
+                index === 0 ||
+                index === 1 ||
                 index === 3 ||
                 index === 4 ||
                 index === 5 ||
