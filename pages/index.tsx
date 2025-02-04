@@ -368,12 +368,14 @@ const ButtonEmail = styled.button`
 type ItemKey = 'item1' | 'item2' | 'item3' | 'item4' | 'item5' | 'item6';
 
 const itemLabels: Record<ItemKey, string> = {
-  item1: 'Доклад Попова С.В. «Обустройство как эманация Духа»',
-  item2: 'Материалы диспутов на тему «Обустройства»',
-  item3: 'Письмо царя Филиппа Аристотелю',
-  item4: 'Гермес "Превращения"',
-  item5: 'Концепт: Собственное содержание',
-  item6: 'Концепт: Родовая схема'
+  item1: 'Иванов Ум человеческий',
+  item2: 'Фрагменты из записки Р. Зорге тов. Сталину в мае 1943 года',
+  item3: 'Франсиско Варела. Отрывок из выступления на семинаре в Национальном центре научных исследований (стенограмма). Париж, 2000г.',
+  item4: 'Доклад Попова С.В. "Дети и деньги"',
+  item5: 'Материалы диспутов ММАСС на тему «Обустройство»',
+  item6: 'Доклад Попова С.В. «Обустройство как эманация Духа»',
+  item7: 'Концепт: Собственное содержание',
+  item8: 'Концепт: Родовая схема'
 };
 
  //end sheet2
@@ -442,7 +444,9 @@ const Home: NextPage = () => {
     item3: false,
     item4: false,
     item5: false,
-    item6: false
+    item6: false,
+    item7: false,
+    item8: false,
   });
 
   const handleCheckboxChange = (item: ItemKey) => {
@@ -829,7 +833,7 @@ const Home: NextPage = () => {
                 <Column>
                   <SectionTitle>Готовятся к публикации</SectionTitle>
                   <CheckboxList>
-                    {(['item1', 'item2', 'item3', 'item4'] as ItemKey[]).map((key) => (
+                    {(['item1', 'item2', 'item3'] as ItemKey[]).map((key) => (
                       <CheckboxLabel key={key} isChecked={checkedItems[key]}>
                         <Checkbox
                           type="checkbox"
@@ -845,7 +849,7 @@ const Home: NextPage = () => {
                 <Column>
                   <SectionTitle>Ненаписанные но обозначенные:</SectionTitle>
                   <CheckboxList>
-                    {(['item5', 'item6'] as ItemKey[]).map((key) => (
+                    {(['item5', 'item6', 'item4' , 'item7' , 'item7'] as ItemKey[]).map((key) => (
                       <CheckboxLabel key={key} isChecked={checkedItems[key]}>
                         <Checkbox
                           type="checkbox"
