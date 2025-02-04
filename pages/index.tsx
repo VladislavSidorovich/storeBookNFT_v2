@@ -276,7 +276,8 @@ const CheckboxLabel = styled.label<{ isChecked: boolean }>`
 
 const Checkbox = styled.input`
   margin-right: 10px;
-  width: 1vw;
+  width: 0.8vw;
+  height: 0.6vw;
   margin-left: 0;
   @media (max-width: 700px) {
     width: 16px;
