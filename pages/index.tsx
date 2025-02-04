@@ -365,7 +365,7 @@ const ButtonEmail = styled.button`
 
 
 
-type ItemKey = 'item1' | 'item2' | 'item3' | 'item4' | 'item5' | 'item6';
+type ItemKey = 'item1' | 'item2' | 'item3' | 'item4' | 'item5' | 'item6' | 'item7' | 'item8';
 
 const itemLabels: Record<ItemKey, string> = {
   item1: 'Иванов Ум человеческий',
