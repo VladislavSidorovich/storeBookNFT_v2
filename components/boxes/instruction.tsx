@@ -45,7 +45,7 @@ const Instruction = () => {
               </a>
             </li>
             <li>
-              <a href="https://drive.google.com/file/d/1O7Y480gsMMJWV1eAE04_78naSf5YvsMG/view?usp=sharing" target="_blank">
+              <a href="https://drive.google.com/file/d/1tLNxvJ7wyvRGpprjeqvGJEOl7c1Vwsw2/view?usp=sharing" target="_blank">
                 Купить криптовалюту на кошелек
                 <Image
                   src={svg.click}

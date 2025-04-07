@@ -183,7 +183,7 @@ function Index() {
         ))
       ) : (
         <div className="loading-block">
-          <Lottie animationData={animation} className={"loading-block-animation"} />
+          {/* <Lottie animationData={animation} className={"loading-block-animation"} />*/} 
         </div>
       )}
     </Swiper>

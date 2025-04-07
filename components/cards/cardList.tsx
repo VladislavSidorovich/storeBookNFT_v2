@@ -35,10 +35,10 @@ const CardList = () => {
         ))
       ) : (
         <div className={styles["cardList__loading"]}>
-          <Lottie
+       {/*    <Lottie
             animationData={animation}
             className={styles["cardList__loading__animation"]}
-          />
+          />*/} 
         </div>
       )}
     </div>

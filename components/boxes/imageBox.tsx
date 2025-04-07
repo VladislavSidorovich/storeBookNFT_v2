@@ -3,8 +3,16 @@ import styles from "./imageBox.module.css";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import svg from "../../static/svg/svg";
-import Lottie from "lottie-react";
-import animation from "../../static/lottie/loadingAnimation.json";
+import dynamic from "next/dynamic";
+
+// 1. Динамический импорт с защитой от SSR + fallback
+const Lottie = dynamic(
+  () => import("lottie-react").then((mod) => mod.default),
+  { 
+    ssr: false,
+    loading: () => <div className="loading-placeholder" /> // Fallback при загрузке
+  }
+);
 
 interface ImageBoxProps {
   url: string;
@@ -17,34 +25,35 @@ interface ImageBoxProps {
 const ImageBox = ({ url, alt, width, height, onClose }: ImageBoxProps) => {
   const imageBoxRef = useRef<HTMLDivElement>(null);
   const [isImageLoading, setIsImageLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
+  // 2. Гарантируем выполнение только на клиенте
   useEffect(() => {
-    // Проверяем, что код выполняется на клиенте
-    if (typeof document !== "undefined") {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (
-          imageBoxRef.current &&
-          !imageBoxRef.current.contains(event.target as Node)
-        ) {
-          onClose?.();
-        }
-      };
+    setIsMounted(true);
 
-      const handleKeyDown = (event: KeyboardEvent) => {
-        if (event.key === "Escape") {
-          onClose?.();
-        }
-      };
+    const handleClickOutside = (event: MouseEvent) => {
+      if (imageBoxRef.current && !imageBoxRef.current.contains(event.target as Node)) {
+        onClose?.();
+      }
+    };
 
-      document.addEventListener("mousedown", handleClickOutside);
-      document.addEventListener("keydown", handleKeyDown);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose?.();
+      }
+    };
 
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-        document.removeEventListener("keydown", handleKeyDown);
-      };
-    }
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, [onClose]);
+
+  // 3. Двойная защита для Lottie
+  if (!isMounted) return null;
 
   return (
     <motion.div
@@ -60,13 +69,21 @@ const ImageBox = ({ url, alt, width, height, onClose }: ImageBoxProps) => {
             alt="close"
             onClick={onClose}
             className={styles["imageBox__block__close"]}
+            priority
           />
         )}
-        {isImageLoading && (
+
+        {/* 4. Полностью безопасный рендер Lottie */}
+        {isImageLoading && isMounted && (
           <div className={styles["img_loading"]}>
-            <Lottie animationData={animation} />
+         {/*    <Lottie 
+              animationData={require("../../static/lottie/loadingAnimation.json")} 
+              className="loading-block-animation"
+            />
+            */} 
           </div>
         )}
+
         <Image
           src={url}
           alt={alt}
@@ -74,6 +91,7 @@ const ImageBox = ({ url, alt, width, height, onClose }: ImageBoxProps) => {
           height={height}
           className={styles["imageBox__block__image"]}
           onLoadingComplete={() => setIsImageLoading(false)}
+          priority
         />
       </div>
     </motion.div>

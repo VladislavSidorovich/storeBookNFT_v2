@@ -69,9 +69,12 @@ input
     padding: 0 15px
 
 .wrap
-    display: flex
-    align-items: center
-    justify-content: space-between
+  display: grid
+  grid-template-columns: repeat(3, auto)  // ширина по содержимому
+  justify-items: center
+  
+  & > :last-child
+    grid-column: 2
 
 .btn
     width: 100%	
@@ -141,7 +144,7 @@ input
             background-color: rgba(#fff, .1)
 
 .btn_NotBlockchain
-    margin-top: 14.2em
+    margin-top: 16.5em
     background-color: #222
     border: none
     color: #8E8E8E

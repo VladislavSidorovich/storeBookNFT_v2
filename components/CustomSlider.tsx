@@ -167,8 +167,8 @@ function Index() {
                   el.result.supplyRemain ? Number(el.result.supplyRemain) : 0
                 }
                 uri={el.result.uri ? el.result.uri : ""}
-                previewText={index === 2 ? "Превью" : "Превью статьи"}
-                actionText={index === 2 ? "Смотреть" : "Читать статью"}
+                previewText={index === 2 ? "Превью статьи" : "Превью статьи"}
+                actionText={index === 2 ? "Читать статью" : "Читать статью"}
               />
             ) : (
               <SliderItemNotBlockchain
@@ -186,7 +186,7 @@ function Index() {
         ))
       ) : (
         <div className="loading-block">
-          <Lottie animationData={animation} className={"loading-block-animation"} />
+       {/* <Lottie animationData={animation} className={"loading-block-animation"} />*/} 
         </div>
       )}
     </Swiper>

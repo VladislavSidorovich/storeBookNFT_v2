@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ['lottie-react', 'lottie-web'], // ✅ Правильное размещение
   images: {
     remotePatterns: [
       {

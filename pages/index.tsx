@@ -656,6 +656,15 @@ const Home: NextPage = () => {
                 Как купить NFT?
               </a>
             </li>
+            <li>
+              Купить или продать <br /> NFT на маркетплейсе
+              <a
+                href="https://drive.google.com/file/d/1joAKIYR4-8HtPDX8NF6wVd01TbpBkJss/view"
+                target="_blank"
+              >
+                Как купить или продать NFT?
+              </a>
+            </li>
           </ol>
         </div>
       </section>

@@ -171,7 +171,7 @@ const Card = ({ titleCounter, price, supplyRemain, uri }: CardProps) => {
               <div
                 className={styles["img_loading"]}
               >
-                <Lottie animationData={animation} />
+            {/*     <Lottie animationData={animation} />*/}
               </div>
             )}
             {imageURL && (
