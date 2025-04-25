@@ -165,7 +165,7 @@ function Index() {
                   el.result.supplyRemain ? Number(el.result.supplyRemain) : 0
                 }
                 uri={el.result.uri ? el.result.uri : ""}
-                previewText={index === 2 ? "Превью" : "Превью статьи"}
+                previewText={index === 2 ? "Превью" : "Превью"}
                 actionText={index === 2 ? "Смотреть" : "Читать статью"}
               />
             ) : (
