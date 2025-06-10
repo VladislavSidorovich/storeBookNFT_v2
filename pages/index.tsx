@@ -977,10 +977,10 @@ const Home: NextPage = () => {
                     Войти
                   </button>
                 </form>
-                <p className="policy">
+           {/*    <p className="policy">
                   Нажимая на кнопку, Вы соглашаетесь с условиями{" "}
                   <a target="_blank" href="https://arweave.net/ZVmszxUmw-IaKSLRRwhDdMQ8fsjXod55tOCBKoqPAnE">политики конфиденциальности</a>
-                </p>
+                </p> */}  
               </motion.div>
             </motion.div>
           )}

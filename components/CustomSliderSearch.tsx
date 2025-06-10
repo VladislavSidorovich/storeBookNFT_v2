@@ -372,7 +372,7 @@ useEffect(() => {
                                 ? `${formatUnits(el.price, 18)} POL (ex. MATIC)`
                                 : "Цена не указана"}
                             </p>
-                            <p className="nft__caption">(Около 300 рублей РФ)</p>
+             
                             <br />
                           </div>
                         ) : (

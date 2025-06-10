@@ -202,14 +202,14 @@ function SendForm() {
                 }}
               </ConnectButton.Custom>
             </form>
-            <p className="policy">
+  {/*         <p className="policy">
               Нажимая на кнопку, Вы соглашаетесь с условиями{" "}
               <b>
                 <a target="_blank" href="https://arweave.net/ZVmszxUmw-IaKSLRRwhDdMQ8fsjXod55tOCBKoqPAnE">
                   лицензионного соглашения
                 </a>
               </b>
-            </p>
+            </p>*/}
           </div>
         )}
       </motion.div>

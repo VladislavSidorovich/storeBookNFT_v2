@@ -65,7 +65,7 @@ function SliderItem({ id, price, supplyRemain, uri, previewText, actionText, isA
           <p className="nft__heading">{content?.authorInfo}</p>
           <p className="nft__caption">Стоимость:</p>
           <p className="nft__price">{formatUnits(price, 18)} POL <span className="nft__priceMATIC">(ex. MATIC)</span></p>
-          <p className="nft__caption">(Около 300 рублей РФ)</p>
+
           <br />
           <p className="nft__caption">Оставшееся количество: {supplyRemain}</p>
           <p className="nft__time">{content?.date}</p>
