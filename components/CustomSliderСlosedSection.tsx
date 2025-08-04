@@ -111,26 +111,7 @@ function Index() {
 
   // Пример статических данных
   const staticData: StaticData[] = [
-    {
-      id: 1,
-      name: "Обустройство как эманация Духа",
-      price: "",
-      supplyRemain: 10,
-      uri: "uri1",
-      authorInfo: "С.В Попов",
-      previewText: "Превью статьи 1",
-      actionText: "Читать статью 1", // Условие для купленной статьи
-    },
-    {
-      id: 2,
-      name: "Фрагменты из записки Р. Зорге тов. Сталину в мае 1943",
-      price: "",
-      supplyRemain: 10,
-      uri: "uri1",
-      authorInfo: "",
-      previewText: "Превью статьи 1",
-      actionText: "Читать статью 1", // Условие для купленной статьи
-    },
+
   ];
 
   // Объединение данных из блокчейна и статических данных
@@ -219,13 +200,15 @@ function Index() {
                 index === 4 ||
                 index === 6 ||
                 index === 8 ||
-                index === 9 ||
+                index === 7 ||
                 index === 10 || 
                 index === 11 || 
                 index === 12 || 
                 index === 13 || 
                 index === 14 || 
-                index === 15
+                index === 15 || 
+                index === 16 || 
+                index === 17
                   ? "hidden-slide"
                   : ""
               }
