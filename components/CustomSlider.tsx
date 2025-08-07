@@ -157,7 +157,7 @@ function Index() {
         combinedData.map((el, index) => (
           <SwiperSlide
             key={index}
-            className={ index === 7 || index === 9 || index === 12 || index === 13 ||  index === 14 ||  index === 15 || index === 11 ? "hidden-slide" : ""}
+            className={  index === 9  || index === 13 ||  index === 14 ||  index === 15 || index === 11 ? "hidden-slide" : ""}
           >
             {"result" in el ? (
               <SliderItem
