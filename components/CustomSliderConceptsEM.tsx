@@ -1,8 +1,8 @@
-"use client";
 import { useEffect, useMemo, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
-import SliderItemNotBlockchain from "./SliderItemNotBlockchain";
+import SliderItem from "./SliderItem";
+import SliderItemNotBlockchainMMACCReports from "./SliderItemNotBlockchainMMACCReports";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
@@ -22,30 +22,129 @@ import {
 } from "../utils/converter";
 import Lottie from "lottie-react";
 import animation from "../static/lottie/loadingAnimation.json";
-import { networkInterfaces } from "os";
 
-const combinedData = [
-  {
-    id: 1,
-    name: "Концепт: Родовая схема",
-    price: "",
-    supplyRemain: 10,
-    uri: "uri1",
-    previewText: "Превью статьи 1",
-    actionText: "Читать статью 1",
-  },
-  {
-    id: 2,
-    name: "Концепт: Собственное содержание",
-    price: "",
-    supplyRemain: 5,
-    uri: "uri2",
-    previewText: "Превью статьи 2",
-    actionText: "Читать статью 2",
-  }
-];
+interface BlockchainData {
+  error?: undefined;
+  result: any;
+  status: "success";
+}
 
-const Index = () => {
+
+
+interface StaticData {
+  id: number;
+  name: string;
+  price: string;
+  supplyRemain: number;
+  uri: string;
+  previewText: string;
+  actionText: string;
+  authorInfo: string;
+}
+
+
+type CombinedData = BlockchainData | StaticData;
+
+function Index() {
+  const [firstTitlesDataReceived, setFirstTitlesDataReceived] = useState(false);
+  const [newTitlesData, setNewTitlesData] = useState<Titles>();
+
+  const { address } = useAccount();
+  const { data: titlesData, status } = useTitlesData();
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const func = async (address: `0x${string}`) => {
+      getAddressNFTdataCounters(address).then((data) => {
+        if (data?.length) {
+          const filteredData = filterMultipleTitleCountersResult(data);
+          if (filteredData) {
+            setTimeout(() => {
+              dispatch(setCompletedIds(filteredData));
+            }, 1000);
+          } else {
+            dispatch(setAllProductsToNotCompleted());
+          }
+        } else {
+          dispatch(setAllProductsToNotCompleted());
+        }
+      });
+    };
+
+    if (address) {
+      func(address);
+    }
+  }, [address, dispatch]);
+
+  useEffect(() => {
+    if (titlesData && titlesData?.length && !firstTitlesDataReceived) {
+      setNewTitlesData(titlesData);
+      setFirstTitlesDataReceived(true);
+      console.log(titlesData.length);
+      console.log(titlesData);
+    }
+  }, [titlesData, firstTitlesDataReceived]);
+
+  useEffect(() => {
+    if (titlesData && titlesData?.length) {
+      const result = filterTitleResult(titlesData);
+
+      if (result) dispatch(setProducts(result));
+    }
+    console.log(newTitlesData);
+  }, [dispatch, newTitlesData]);
+
+  // Пример статических данных
+  const staticData: StaticData[] = [
+     {
+      id: 1,
+      name: "Концепт: Родовая схема",
+      price: "",
+      supplyRemain: 10,
+      uri: "uri1",
+      previewText: "Превью статьи 1",
+      actionText: "Читать статью 1",
+      authorInfo: "",
+    },
+    {
+      id: 2,
+      name: "Концепт: Собственное содержание",
+      price: "",
+      supplyRemain: 5,
+      uri: "uri2",
+      previewText: "Превью статьи 2",
+      actionText: "Читать статью 2",
+      authorInfo: "",
+    }
+  ];
+
+  // Объединение данных из блокчейна и статических данных
+  const combinedData: CombinedData[] = useMemo(() => {
+    const successfulBlockchainData = titlesData?.filter(
+      (data): data is BlockchainData => 'result' in data && data.status === "success"
+    ) || [];
+
+    // Переворачиваем порядок элементов, учитывая только данные из блокчейна
+    const reversedBlockchainData = successfulBlockchainData.reverse();
+
+    // Обновляем id на обратный порядок только для данных из блокчейна
+    reversedBlockchainData.forEach((el, index) => {
+      el.result.id = reversedBlockchainData.length - index;
+    });
+
+    // Возвращаем только данные из блокчейна и добавляем статические данные без изменений
+    return [...reversedBlockchainData, ...staticData];
+  }, [titlesData, staticData]);
+
+  useEffect(() => {
+    if (combinedData) {
+      combinedData.forEach((el) => {
+        const previewUri = "result" in el ? el.result.uri : el.uri;
+      });
+    }
+  }, [combinedData]);
+
   return (
     <Swiper
       modules={[Pagination, Navigation]}
@@ -65,22 +164,43 @@ const Index = () => {
       pagination={{ clickable: true }}
       className="custom-swiper"
     >
-      {combinedData.map((item) => (
-        <SwiperSlide key={item.id}>
-          <SliderItemNotBlockchain
-            id={item.id}
-            name={item.name}
-            price={item.price}
-            supplyRemain={item.supplyRemain}
-            uri={item.uri}
-            previewText={item.previewText}
-            actionText={item.actionText}
-          />
-        </SwiperSlide>
-      ))}
-      
+      {combinedData && status === "success" ? (
+        combinedData.map((el, index) => (
+          <SwiperSlide
+            key={index}
+            className={ index === 1 || index === 2 || index === 3 || index === 4 || index === 5 || index === 11 || index === 7 || index === 6 || index === 8 || index === 9 || index === 10  || index === 12 || index === 13 || index === 14 || index === 15 || index === 16 || index === 17 || index === 18 ? "hidden-slide" : ""}
+          >
+            {"result" in el ? (
+              <SliderItem
+                id={el.result.id}
+                price={el.result.price ? el.result.price : BigInt(0)}
+                supplyRemain={
+                  el.result.supplyRemain ? Number(el.result.supplyRemain) : 0
+                }
+                uri={el.result.uri ? el.result.uri : ""}
+                previewText={index === 2 ? "Превью" : "Превью"}
+                actionText={index === 2 ? "Смотреть" : "Читать статью"}
+              />
+            ) : (
+              <SliderItemNotBlockchainMMACCReports
+                id={el.id}
+                name={el.name}
+                price={el.price}
+                supplyRemain={el.supplyRemain}
+                uri={el.uri}
+                previewText={el.previewText}
+                actionText={el.actionText}
+              />
+            )}
+          </SwiperSlide>
+        ))
+      ) : (
+        <div className="loading-block">
+          {/* <Lottie animationData={animation} className={"loading-block-animation"} />*/} 
+        </div>
+      )}
     </Swiper>
   );
-};
+}
 
 export default Index;
