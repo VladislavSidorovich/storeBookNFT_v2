@@ -56,7 +56,7 @@ const Instruction = () => {
             </li>
             <li>
               <a href="https://drive.google.com/file/d/138TzHvksewxeKLv1uroNgK5mcn6OWnsa/view?usp=sharing" target="_blank">
-                Создать NFT нужной Вам статьи на данном сайте
+                Создать NFT нужной Вам статьи на данном сайтец
                 <Image
                   src={svg.click}
                   alt="click"
@@ -67,6 +67,12 @@ const Instruction = () => {
           </ol>
         </motion.div>
       )}
+
+      <div className={style.support}>
+        <a href="https://t.me/mmasspro_support_bot" target="_blank" rel="noopener noreferrer">
+          Техническая поддержка: @mmasspro_support_bot
+        </a>
+      </div>
     </div>
   );
 };

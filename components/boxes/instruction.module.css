@@ -199,3 +199,42 @@
     height: auto;
   }
 }
+
+.support {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #f8f8f8;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  font-size: 0.9rem;
+}
+
+.support a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.support a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .support {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+    bottom: 15px;
+    right: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .support {
+    font-size: 0.7rem;
+    padding: 6px 10px;
+    bottom: 10px;
+    right: 10px;
+  }
+}
