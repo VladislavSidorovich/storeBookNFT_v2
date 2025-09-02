@@ -819,7 +819,7 @@ const Home: NextPage = () => {
           </div>
           <ol className="wrap">
             <li>
-              Создать криптокошелек ыыыыы<br />
+              Создать криптокошелек<br />
               OKX
               <a
                 href="https://drive.google.com/file/d/16xO1Lr_km13KWJcZIEFw6oPCz4-vwKuF/view?usp=sharing"
