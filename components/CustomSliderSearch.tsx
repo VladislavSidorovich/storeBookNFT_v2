@@ -305,7 +305,7 @@ useEffect(() => {
       {searchQuery.trim() && (
   <>
     {/* Проверяем наличие данных после фильтрации */}
-    {status === "success" && filteredData.filter((el) => el.id !== 20).length === 0 ? (
+    {status === "success" && filteredData.filter((el) => el.id !== 30).length === 0 ? (
       // Если ничего не найдено, выводим текст
       <p className="no-results-text">По вашему запросу ничего не найдено</p>
     ) : (
@@ -330,7 +330,7 @@ useEffect(() => {
       >
             {status === "success" ? (
               filteredData
-                .filter((el) => el.id !== 9) // Исключаем элементы с id 9
+                .filter((el) => el.id !== 31) // Исключаем элементы с id 9
                 .map((el) => {
                   const id = el.id;
 
