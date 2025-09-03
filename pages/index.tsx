@@ -832,7 +832,7 @@ const Home: NextPage = () => {
               приобрести криптовалюту <br />
               на кошелек
               <a
-                href="https://drive.google.com/file/d/1O7Y480gsMMJWV1eAE04_78naSf5YvsMG/view?usp=sharing"
+                href="https://drive.google.com/file/d/1tLNxvJ7wyvRGpprjeqvGJEOl7c1Vwsw2/view"
                 target="_blank"
               >
                 Как приобрести криптовалюту?
