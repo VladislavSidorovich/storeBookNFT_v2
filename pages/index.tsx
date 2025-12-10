@@ -1038,7 +1038,7 @@ const Home: NextPage = () => {
               <Content>
                 <Column>
                   <SectionTitle>Готовятся к публикации</SectionTitle>
-                  <CheckboxList>
+                 {/* <CheckboxList>
                     {(['item1', 'item2', 'item3'] as ItemKey[]).map((key) => (
                       <CheckboxLabel key={key} isChecked={checkedItems[key]}>
                         <Checkbox
@@ -1049,7 +1049,7 @@ const Home: NextPage = () => {
                         {itemLabels[key]}
                       </CheckboxLabel>
                     ))}
-                  </CheckboxList>
+                  </CheckboxList>*/}
                 </Column>
                 <Divider />
                 <Column>
